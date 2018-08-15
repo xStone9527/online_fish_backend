@@ -1,0 +1,10 @@
+# Byte-compiled / optimized / DLL files
+.idea/
+.vscode/
+__pycache__/
+
+# Python:
+*.py[cod]
+*.so
+*.egg
+*.egg-info
