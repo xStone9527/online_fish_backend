@@ -63,7 +63,7 @@ class Goods(models.Model):
     ship_free = models.BooleanField(default=True,verbose_name="是否承担运费")
     goods_front_image = models.ImageField(upload_to="goods/images",null=True,blank=True,verbose_name="封面图")
     is_new = models.BooleanField(default=False,verbose_name="是否新品")
-    is_hot = models.BooleanField(default=False,verbose_name="是否新品")
+    is_hot = models.BooleanField(default=False,verbose_name="是否热销")
     add_time = models.DateTimeField(auto_now_add=True, verbose_name="添加时间")
 
     class Meta:

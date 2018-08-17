@@ -24,7 +24,7 @@ class DefaultResultsSetPagination(PageNumberPagination):
     max_page_size = 100     #通过url修改参数  最大单页面100个
 
 
-class GoodsListViewSet(mixins.ListModelMixin,GenericViewSet):
+class GoodsListViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,GenericViewSet):
     """
     商品列表 分页 过滤 搜索 排序
     """
