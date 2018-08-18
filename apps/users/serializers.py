@@ -46,13 +46,6 @@ class UserRegSerializer(serializers.ModelSerializer):
     password = serializers.CharField(style={'input_type': 'password'},label="密码",write_only=True)
     mobile = serializers.CharField(allow_blank=True,required=False)
 
-    # def create(self, validated_data):
-    #     user = super(UserRegSerializer,self).create(validated_data=validated_data)
-    #     user.set_password(validated_data['password'])
-    #     user.save()
-    #     return user
-
-
     def validate_code(self,code):
         verify_records = VerifyCode.objects.filter(mobile=self.initial_data['username']).order_by('-add_time')
         if verify_records:
@@ -72,3 +65,18 @@ class UserRegSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("username","mobile","password","code")
+
+    # def create(self, validated_data):
+    #     user = super(UserRegSerializer,self).create(validated_data=validated_data)
+    #     user.set_password(validated_data['password'])
+    #     user.save()
+    #     return user
+class UserDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =User
+        fields = ("name", "gender", "birthday", "email","mobile")
+
+
+
+
+

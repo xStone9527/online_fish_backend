@@ -2,6 +2,10 @@ from django.shortcuts import render
 
 # Create your views here.
 
+from string import digits
+from random import sample
+from json import dumps,loads
+
 from  django.contrib.auth.backends import ModelBackend
 from django.contrib.auth import get_user_model  #获取用户方式二
 from django.db.models import Q
@@ -9,13 +13,15 @@ from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import VerifyCodeSerializer,UserRegSerializer
-from utils.sms_send import AliYunSMS
-from string import digits
-from random import sample
-from json import dumps,loads
-from users.models import VerifyCode
 from rest_framework_jwt.serializers import jwt_encode_handler,jwt_payload_handler
+from rest_framework import permissions
+from rest_framework.authentication import SessionAuthentication
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
+from users.models import VerifyCode
+from .serializers import VerifyCodeSerializer,UserRegSerializer,UserDetailSerializer
+from utils.sms_send import AliYunSMS
+
 
 
 User = get_user_model()
@@ -54,12 +60,35 @@ class SmsCustomViewset(mixins.CreateModelMixin,viewsets.GenericViewSet):
             return Response({"mobile":res['Message']},status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserViewset(mixins.CreateModelMixin,viewsets.GenericViewSet):
+class UserViewset(mixins.CreateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     """
     创建用户
     """
     serializer_class = UserRegSerializer
     queryset = User.objects.all()
+    authentication_classes = (SessionAuthentication,JSONWebTokenAuthentication)
+
+
+    def get_permissions(self):
+        """
+        注册用户 和 获取用户信息时 权限不同
+        """
+        if self.action == "retrieve":
+            return [permissions.IsAuthenticated()]
+        elif self.action == "create":
+            return []
+        return []
+    def get_serializer_class(self):
+        """
+        用户action不同，序列化不同
+        """
+        if self.action == "retrieve":
+            return UserDetailSerializer
+        elif self.action == "create":
+            return UserRegSerializer
+        return UserRegSerializer
+
+
 
 
     def create(self, request, *args, **kwargs):
@@ -73,6 +102,9 @@ class UserViewset(mixins.CreateModelMixin,viewsets.GenericViewSet):
         re_dict['name'] = user.name  if user.name else user.username
         headers = self.get_success_headers(serializer.data)
         return Response(re_dict, status=status.HTTP_201_CREATED, headers=headers)
+
+    def get_object(self): #用户虽然输入id，都只返回当前用户。
+        return self.request.user
 
     def perform_create(self, serializer):
         return serializer.save()
