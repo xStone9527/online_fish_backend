@@ -7,6 +7,7 @@ describe:
 """
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
+from goods.serializers import GoodsSerializer
 
 from .models import UserFav
 
@@ -28,3 +29,10 @@ class UserFavSerializer(serializers.ModelSerializer):
                 message = "已经收藏,不需要再创建  "
             )
         ]
+
+class UserFavDetailSerializer(serializers.ModelSerializer):
+    goods = GoodsSerializer()
+
+    class Meta:
+        model = UserFav
+        fields = ("goods", "id")

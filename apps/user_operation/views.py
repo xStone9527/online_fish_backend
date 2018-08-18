@@ -6,7 +6,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.authentication import SessionAuthentication
 
 from .models import UserFav
-from .serializers import UserFavSerializer
+from .serializers import UserFavSerializer,UserFavDetailSerializer
 from .permissions import IsOwnerOrReadOnly
 
 
@@ -29,4 +29,13 @@ class UserFavViewset(mixins.CreateModelMixin,mixins.DestroyModelMixin,mixins.Lis
 
     def get_queryset(self): #只能查看自己的收藏
         return UserFav.objects.filter(user=self.request.user)
+    def get_serializer_class(self):
+        """
+        用户action不同，序列化不同
+        """
+        if self.action == "list":
+            return UserFavDetailSerializer
+        elif self.action == "create":
+            return UserFavSerializer
+        return UserFavSerializer
 

@@ -59,8 +59,7 @@ class SmsCustomViewset(mixins.CreateModelMixin,viewsets.GenericViewSet):
         else:
             return Response({"mobile":res['Message']},status=status.HTTP_400_BAD_REQUEST)
 
-
-class UserViewset(mixins.CreateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
+class UserViewset(mixins.CreateModelMixin,mixins.UpdateModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):  #mixins.UpdateModelMixin, 带来两种action put 全更新 putch 部分更新
     """
     创建用户
     """
@@ -86,7 +85,7 @@ class UserViewset(mixins.CreateModelMixin,mixins.RetrieveModelMixin,viewsets.Gen
             return UserDetailSerializer
         elif self.action == "create":
             return UserRegSerializer
-        return UserRegSerializer
+        return UserDetailSerializer
 
 
 
