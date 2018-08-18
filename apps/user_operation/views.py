@@ -11,7 +11,7 @@ from .permissions import IsOwnerOrReadOnly
 
 
 
-class UserFavViewset(mixins.CreateModelMixin,mixins.DestroyModelMixin,mixins.ListModelMixin,viewsets.GenericViewSet):
+class UserFavViewset(mixins.CreateModelMixin,mixins.DestroyModelMixin,mixins.ListModelMixin,mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     """
     用户收藏功能
     list:
@@ -25,6 +25,7 @@ class UserFavViewset(mixins.CreateModelMixin,mixins.DestroyModelMixin,mixins.Lis
     serializer_class = UserFavSerializer
     permission_classes = (permissions.IsAuthenticated,IsOwnerOrReadOnly)
     authentication_classes = (JSONWebTokenAuthentication,SessionAuthentication)
+    lookup_field = "goods_id"  #用户进入页面 按照商品编号查找收藏记录
 
     def get_queryset(self): #只能查看自己的收藏
         return UserFav.objects.filter(user=self.request.user)
