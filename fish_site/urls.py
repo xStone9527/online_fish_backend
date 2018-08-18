@@ -52,7 +52,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls')),
     #DRF 自带认证模式
     url(r'^api-token-auth/', views.obtain_auth_token),
-    url(r'docs/',include_docs_urls(title='fish shop api')),
+    url(r'docs/',include_docs_urls(title='fish shop api docs')),
 
     #REST framework JWT Auth
     url(r'^login/', obtain_jwt_token),

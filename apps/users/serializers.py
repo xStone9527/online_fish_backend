@@ -18,7 +18,7 @@ User = get_user_model()
 REGEX_MOBILE = "^((1[3,5,8][0-9])|(14[5,7])|(17[0,6,7,8])|(19[7]))\\d{8}$"
 
 class VerifyCodeSerializer(serializers.Serializer):
-    mobile = serializers.CharField(max_length=11,min_length=11,required=True)
+    mobile = serializers.CharField(max_length=11,min_length=11,required=True,help_text="手机号码")
 
     def validate_mobile(self,mobile):
         # 验证用户是否存在

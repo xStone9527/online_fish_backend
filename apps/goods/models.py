@@ -52,7 +52,7 @@ class Goods(models.Model):
     good_sn = models.CharField(max_length=30,default="",verbose_name="商品编号",help_text="商品编号")
     name = models.CharField(max_length=300,verbose_name="商品名称")
     click_num = models.IntegerField(default=0,verbose_name="商品点击量")
-    sold_num =  models.IntegerField(default=0,verbose_name="商品销售量")
+    sold_num =  models.IntegerField(default=0,verbose_name="商品销售量",help_text="商品销售量")
     fav_num = models.IntegerField(default=0,verbose_name="商品收藏量")
     goods_num = models.IntegerField(default=0,verbose_name="库存量")
     market_price = models.FloatField(default=0,verbose_name="市场价格")
@@ -63,7 +63,7 @@ class Goods(models.Model):
     ship_free = models.BooleanField(default=True,verbose_name="是否承担运费")
     goods_front_image = models.ImageField(upload_to="goods/images",null=True,blank=True,verbose_name="封面图")
     is_new = models.BooleanField(default=False,verbose_name="是否新品")
-    is_hot = models.BooleanField(default=False,verbose_name="是否热销")
+    is_hot = models.BooleanField(default=False,verbose_name="是否热销",help_text="是否热销")
     add_time = models.DateTimeField(auto_now_add=True, verbose_name="添加时间")
 
     class Meta:

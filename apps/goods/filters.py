@@ -13,7 +13,7 @@ class GoodsFilter(filters.FilterSet):
     """
     商品的过滤类
     """
-    pricemin = filters.NumberFilter(name="shop_price", lookup_expr='gte')
+    pricemin = filters.NumberFilter(name="shop_price", lookup_expr='gte',help_text ="最小价格")
     pricemax = filters.NumberFilter(name="shop_price", lookup_expr='lte')
     name = filters.CharFilter(name ="name",lookup_expr='contains')
     top_category = filters.NumberFilter(method='top_category_filter')
