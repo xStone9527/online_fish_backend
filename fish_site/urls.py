@@ -13,19 +13,21 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+
+import xadmin
+from django.views.static import serve
 from django.conf.urls import url,include
 from django.contrib import admin
-import xadmin
+from rest_framework.documentation import include_docs_urls
+from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken import views
+from rest_framework_jwt.views import obtain_jwt_token
+
 from fish_site.settings import MEDIA_ROOT
-from django.views.static import serve
 # from goods.view_base import GoodsListView
 from goods.views import GoodsListViewSet,GoodsCategoryViewSet
 from users.views import SmsCustomViewset,UserViewset
-from user_operation.views import UserFavViewset
-from  rest_framework.documentation import include_docs_urls
-from rest_framework.routers import DefaultRouter
-from  rest_framework.authtoken import views
-from rest_framework_jwt.views import obtain_jwt_token
+from user_operation.views import UserFavViewset,UserMessageViewset
 
 # 创建路由器并注册我们的视图。
 router = DefaultRouter()
@@ -35,6 +37,8 @@ router.register(r'sms',SmsCustomViewset,base_name='codes')
 router.register('users',UserViewset,base_name='users')
 #收藏
 router.register('userfavs',UserFavViewset,base_name="userfavs")
+#用户留言
+router.register('messages',UserMessageViewset,base_name='userleavemsg')
 
 
 # GoodsCategoryViewSet.as_view(
