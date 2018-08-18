@@ -21,6 +21,7 @@ from django.views.static import serve
 # from goods.view_base import GoodsListView
 from goods.views import GoodsListViewSet,GoodsCategoryViewSet
 from users.views import SmsCustomViewset,UserViewset
+from user_operation.views import UserFavViewset
 from  rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 from  rest_framework.authtoken import views
@@ -32,6 +33,8 @@ router.register(r'goods', GoodsListViewSet)  #url 路径 goods
 router.register(r'categorys',GoodsCategoryViewSet)
 router.register(r'sms',SmsCustomViewset,base_name='codes')
 router.register('users',UserViewset,base_name='users')
+#收藏
+router.register('userfavs',UserFavViewset,base_name="userfavs")
 
 
 # GoodsCategoryViewSet.as_view(
