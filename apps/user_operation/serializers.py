@@ -9,7 +9,7 @@ from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from goods.serializers import GoodsSerializer
 
-from .models import UserFav,UserLeavingMessage
+from .models import UserFav,UserLeavingMessage,UserAddress
 
 class UserFavSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(
@@ -45,4 +45,13 @@ class UserLeavingMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserLeavingMessage
         fields = ("id","user","message_type","subject","message","file","add_time")
+
+class UserAddressSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()   #用户设置默认值 当前用户
+    )
+    class Meta:
+        model = UserAddress
+        fields = ("id","user","province","city","district","address","signer_name","signer_mobile")
+
 

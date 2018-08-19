@@ -27,7 +27,7 @@ from fish_site.settings import MEDIA_ROOT
 # from goods.view_base import GoodsListView
 from goods.views import GoodsListViewSet,GoodsCategoryViewSet
 from users.views import SmsCustomViewset,UserViewset
-from user_operation.views import UserFavViewset,UserMessageViewset
+from user_operation.views import UserFavViewset,UserMessageViewset,AddressViewset
 
 # 创建路由器并注册我们的视图。
 router = DefaultRouter()
@@ -39,7 +39,8 @@ router.register('users',UserViewset,base_name='users')
 router.register('userfavs',UserFavViewset,base_name="userfavs")
 #用户留言
 router.register('messages',UserMessageViewset,base_name='userleavemsg')
-
+#收获地址
+router.register("address",AddressViewset,base_name="address")
 
 # GoodsCategoryViewSet.as_view(
 #     {"get":list},
@@ -56,7 +57,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls')),
     #DRF 自带认证模式
     url(r'^api-token-auth/', views.obtain_auth_token),
-    url(r'docs/',include_docs_urls(title='fish shop api docs')),
+    url(r'docs/',include_docs_urls(title='api文档在线')),
 
     #REST framework JWT Auth
     url(r'^login/', obtain_jwt_token),
