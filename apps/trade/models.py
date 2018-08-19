@@ -15,11 +15,12 @@ class ShoppingCart(models.Model):
     add_time = models.DateTimeField(auto_now_add=True,verbose_name="添加时间")
 
     class Meta:
+        unique_together =("user","goods")
         verbose_name = "购物车"
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return "%s(%d)".format(self.goods.name,self.num)
+        return "%s(%d)".format(self.goods.name,self.nums)
 
 
 class OrderInfo(models.Model):
