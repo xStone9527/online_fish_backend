@@ -48,6 +48,10 @@ class GoodsSerializer(serializers.ModelSerializer):
         fields ="__all__"
 
 
+class GoodsSimpleSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Goods
+        fields ="__all__"
 
 

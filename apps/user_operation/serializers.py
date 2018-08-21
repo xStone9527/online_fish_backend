@@ -7,7 +7,7 @@ describe:
 """
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
-from goods.serializers import GoodsSerializer
+from goods.serializers import GoodsSimpleSerializer
 
 from .models import UserFav,UserLeavingMessage,UserAddress
 
@@ -31,7 +31,7 @@ class UserFavSerializer(serializers.ModelSerializer):
         ]
 
 class UserFavDetailSerializer(serializers.ModelSerializer):
-    goods = GoodsSerializer()
+    goods = GoodsSimpleSerializer()
 
     class Meta:
         model = UserFav

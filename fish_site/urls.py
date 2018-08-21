@@ -28,7 +28,7 @@ from fish_site.settings import MEDIA_ROOT
 from goods.views import GoodsListViewSet,GoodsCategoryViewSet
 from users.views import SmsCustomViewset,UserViewset
 from user_operation.views import UserFavViewset,UserMessageViewset,AddressViewset
-from trade.views import ShopingCartViewset
+from trade.views import ShopingCartViewset,OrderViewSet
 
 # 创建路由器并注册我们的视图。
 router = DefaultRouter()
@@ -44,6 +44,8 @@ router.register('messages',UserMessageViewset,base_name='userleavemsg')
 router.register("address",AddressViewset,base_name="address")
 #购物车
 router.register("shopcarts",ShopingCartViewset,base_name="shopcarts")
+#订单相关
+router.register("orders",OrderViewSet,base_name="orders")
 
 # GoodsCategoryViewSet.as_view(
 #     {"get":list},
