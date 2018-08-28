@@ -9,4 +9,5 @@ __pycache__/
 *.so
 *.egg
 *.egg-info
+fish_site/settings.py
 
