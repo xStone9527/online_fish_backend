@@ -28,7 +28,7 @@ from fish_site.settings import MEDIA_ROOT
 from goods.views import GoodsListViewSet,GoodsCategoryViewSet
 from users.views import SmsCustomViewset,UserViewset
 from user_operation.views import UserFavViewset,UserMessageViewset,AddressViewset
-from trade.views import ShopingCartViewset,OrderViewSet
+from trade.views import ShopingCartViewset,OrderViewSet,AlipayView
 
 # 创建路由器并注册我们的视图。
 router = DefaultRouter()
@@ -66,5 +66,9 @@ urlpatterns = [
 
     #REST framework JWT Auth
     url(r'^login/', obtain_jwt_token),
+
+    url('^alipay/return/',AlipayView.as_view(),name="alipay"),
+
+
 
 ]

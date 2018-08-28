@@ -124,29 +124,53 @@ class AliPay(object):
 
 
 if __name__ == "__main__":
-    return_url = 'http://47.92.87.172:8000/?total_amount=0.01&timestamp=2017-08-15+17%3A15%3A13&sign=jnnA1dGO2iu2ltMpxrF4MBKE20Akyn%2FLdYrFDkQ6ckY3Qz24P3DTxIvt%2BBTnR6nRk%2BPAiLjdS4sa%2BC9JomsdNGlrc2Flg6v6qtNzTWI%2FEM5WL0Ver9OqIJSTwamxT6dW9uYF5sc2Ivk1fHYvPuMfysd90lOAP%2FdwnCA12VoiHnflsLBAsdhJazbvquFP%2Bs1QWts29C2%2BXEtIlHxNgIgt3gHXpnYgsidHqfUYwZkasiDGAJt0EgkJ17Dzcljhzccb1oYPSbt%2FS5lnf9IMi%2BN0ZYo9%2FDa2HfvR6HG3WW1K%2FlJfdbLMBk4owomyu0sMY1l%2Fj0iTJniW%2BH4ftIfMOtADHA%3D%3D&trade_no=2017081521001004340200204114&sign_type=RSA2&auth_app_id=2016080600180695&charset=utf-8&seller_id=2088102170208070&method=alipay.trade.page.pay.return&app_id=2016080600180695&out_trade_no=201702021222&version=1.0'
+
+
 
     alipay = AliPay(
         appid="2016091700534234",
-        app_notify_url="http://projectsedus.com/",
-        app_private_key_path="./key/pri_appkey2048",
-        alipay_public_key_path="./key/alipay_pub_key2048",  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
-        debug=True,  # 默认False,
-        return_url="http://47.92.87.172:8000/"
+        app_notify_url="http://101.132.194.31:8000/alipay/return/",
+        app_private_key_path="../trade/key/pri_appkey2048.txt",
+        alipay_public_key_path="../trade/key/alipay_pub_key2048.txt",  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
+        debug=True,  # 默认False,  沙箱环境用True
+        return_url="http://101.132.194.31:8000/alipay/return/"
     )
+
+
+    url = alipay.direct_pay(
+        subject="测试订单",
+        out_trade_no="201702021121212",
+        total_amount=0.01
+    )
+    re_url = "https://openapi.alipaydev.com/gateway.do?{data}".format(data=url)
+    print(re_url)
+    """
+    return_url = 'http://47.92.87.172:8000/?charset=utf-8&out_trade_no=201702021&method=alipay.trade.page.pay.return&total_amount=0.01&sign=jQ87ECi8mw6vfEn8WV0jOsjAsumTQJou%2BnMYvHZqhWVGVVFrJ0OeTlIIj0C5uS9XgFwhtkuBEWxPHWZ%2FNVF%2Bo4Nv2GHIlXp8D2zRXF27Di8GYLLbuvTQgobcPNeC1UwrVf0sKb7O5qEpiO3akmJLwqzJEydE%2BrJgYafW02kY1eTdJ1TuYCRoZjAEK68iSyiks86fZ%2BRY2yWE0mWv%2BsiZG9ktoDVlbePVxTNMs3jyLQyMWNXp%2BU3jRJ%2FfQ2SbAMiNy08900BhZ3MZXvEzrTbC5hHDGCPSBQPzFWssE6rb9%2BFLQglKdJBbo%2B6fUWvfZenUKoD0jbY5YUF0LEs60EZb6g%3D%3D&trade_no=2018082521001004200500264029&auth_app_id=2016091700534234&version=1.0&app_id=2016091700534234&sign_type=RSA2&seller_id=2088102176073791&timestamp=2018-08-25+17%3A24%3A03'
 
     o = urlparse(return_url)
     query = parse_qs(o.query)
     processed_query = {}
     ali_sign = query.pop("sign")[0]
+    alipay = AliPay(
+        appid="2016091700534234",
+        app_notify_url="http://101.132.194.31:8000/alipay/return/",
+        app_private_key_path="../trade/key/pri_appkey2048.txt",
+        alipay_public_key_path="../trade/key/alipay_pub_key2048.txt",  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
+        debug=True,  # 默认False,  沙箱环境用True
+        return_url="http://101.132.194.31:8000/alipay/return/"
+    )
     for key, value in query.items():
         processed_query[key] = value[0]
     print (alipay.verify(processed_query, ali_sign))
 
+
+    
     url = alipay.direct_pay(
         subject="测试订单",
-        out_trade_no="201702021222",
+        out_trade_no="201702021223",
         total_amount=0.01
     )
     re_url = "https://openapi.alipaydev.com/gateway.do?{data}".format(data=url)
     print(re_url)
+    
+    """

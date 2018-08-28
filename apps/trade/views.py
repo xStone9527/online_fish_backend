@@ -4,6 +4,7 @@ from django.shortcuts import render
 import time
 import string
 import random
+from datetime import datetime
 
 from rest_framework import viewsets,permissions,authentication,mixins
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
@@ -71,4 +72,84 @@ class OrderViewSet(mixins.ListModelMixin,mixins.DestroyModelMixin,mixins.CreateM
             order_goods.save()
             shop_carts.delete()
         return order
+
+
+from rest_framework.views import APIView
+from utils.alipay import AliPay
+from fish_site.settings import ali_pub_key_path,private_key_path
+from rest_framework.response import  Response
+
+class AlipayView(APIView):
+    def get(self,request):
+        """
+        处理支付宝的return_url 返回
+        :param request:
+        :return:
+        """
+        process_dict ={}
+        for key,valuse in request.GET.items():
+            process_dict[key] = valuse
+        sign = process_dict.pop('sign',None)
+
+        alipay = AliPay(
+            appid="2016091700534234",
+            app_notify_url="http://101.132.194.31:8000/alipay/return/",
+            app_private_key_path=private_key_path,
+            alipay_public_key_path=ali_pub_key_path,  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
+            debug=True,  # 默认False,  沙箱环境用True
+            return_url="http://101.132.194.31:8000/alipay/return/"
+        )
+
+        verfy_result = alipay.verify(process_dict, sign)
+        if verfy_result:
+            order_sn = process_dict.get('out_trade_no',None)
+            trade_no = process_dict.get('trade_no',None)
+            trade_status = process_dict.get('trade_status')
+
+            existed_orders = OrderInfo.objects.filter(order_sn=order_sn)
+            for existed_order in existed_orders:
+                existed_order.pay_status = trade_status
+                existed_order.trade_no = trade_no
+                existed_order.pay_time = datetime.now()
+                existed_order.save()
+
+            return Response("success")
+    def post(self,request):
+        """
+        处理支付宝的notify_url
+        :param request:
+        :return:
+        """
+        process_dict ={}
+        for key,valuse in request.POST.items():
+            process_dict[key] = valuse
+        sign = process_dict.pop('sign',None)
+
+        alipay = AliPay(
+            appid="2016091700534234",
+            app_notify_url="http://101.132.194.31:8000/alipay/return/",
+            app_private_key_path=private_key_path,
+            alipay_public_key_path=ali_pub_key_path,  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
+            debug=True,  # 默认False,  沙箱环境用True
+            return_url="http://101.132.194.31:8000/alipay/return/"
+        )
+
+        verfy_result = alipay.verify(process_dict, sign)
+        if verfy_result:
+            order_sn = process_dict.get('out_trade_no',None)
+            trade_no = process_dict.get('trade_no',None)
+            trade_status = process_dict.get('trade_status')
+
+            existed_orders = OrderInfo.objects.filter(order_sn=order_sn)
+            for existed_order in existed_orders:
+                existed_order.pay_status = trade_status
+                existed_order.trade_no = trade_no
+                existed_order.pay_time = datetime.now()
+                existed_order.save()
+
+            return Response("success")
+
+
+
+
 
