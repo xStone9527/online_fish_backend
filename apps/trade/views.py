@@ -5,7 +5,7 @@ import time
 import string
 import random
 from datetime import datetime
-
+from django.shortcuts import redirect
 from rest_framework import viewsets,permissions,authentication,mixins
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
@@ -113,7 +113,14 @@ class AlipayView(APIView):
                 existed_order.pay_time = datetime.now()
                 existed_order.save()
 
-            return Response("success")
+            response = redirect('index')
+            response.set_cookie("nextPath","pay",max_age=30)
+            return response
+
+            #return Response("success")
+        else:
+            response = redirect('index')
+            return response
     def post(self,request):
         """
         处理支付宝的notify_url
