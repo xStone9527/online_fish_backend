@@ -3,9 +3,9 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import GoodsSerializer,GoodsCategorySerializer
+from .serializers import GoodsSerializer,GoodsCategorySerializer,BannerSerializer,IndexGoodsSerializer
 from rest_framework import status
-from .models import Goods,GoodsCategory
+from .models import Goods,GoodsCategory,Banner
 from rest_framework import mixins
 from rest_framework import generics
 from  rest_framework.pagination import PageNumberPagination
@@ -28,6 +28,13 @@ class GoodsListViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,GenericVi
     """
     商品列表 分页 过滤 搜索 排序
     """
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.click_num +=1
+        instance.save()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
     queryset = Goods.objects.get_queryset().order_by('id')
     serializer_class = GoodsSerializer
@@ -57,5 +64,21 @@ class GoodsCategoryViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,Gener
     #     all_goodsCategory = GoodsCategory.objects.all()
     #     return all_goodsCategory.filter(category_type=1)
 
+
+
+class BannerViewset(mixins.ListModelMixin,GenericViewSet):
+    """
+    list:
+        获取轮播图列表
+    """
+    queryset = Banner.objects.all().order_by("index")
+    serializer_class = BannerSerializer
+
+class IndexCategoryViewSet(mixins.ListModelMixin,GenericViewSet):
+    """
+    首页商品分类数据
+    """
+    queryset = GoodsCategory.objects.filter(is_tab=True,name__in=["生鲜食品","酒水饮料"])
+    serializer_class = IndexGoodsSerializer
 
 

@@ -26,7 +26,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from fish_site.settings import MEDIA_ROOT
 # from goods.view_base import GoodsListView
-from goods.views import GoodsListViewSet,GoodsCategoryViewSet
+from goods.views import GoodsListViewSet,GoodsCategoryViewSet,BannerViewset,IndexCategoryViewSet
 from users.views import SmsCustomViewset,UserViewset
 from user_operation.views import UserFavViewset,UserMessageViewset,AddressViewset
 from trade.views import ShopingCartViewset,OrderViewSet,AlipayView
@@ -47,6 +47,10 @@ router.register("address",AddressViewset,base_name="address")
 router.register("shopcarts",ShopingCartViewset,base_name="shopcarts")
 #订单相关
 router.register("orders",OrderViewSet,base_name="orders")
+#轮播图
+router.register('banners',BannerViewset,base_name="banners")
+#首页商品系列数据
+router.register('indexgoods',IndexCategoryViewSet,base_name="indexgoods")
 
 # GoodsCategoryViewSet.as_view(
 #     {"get":list},

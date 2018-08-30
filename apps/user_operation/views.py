@@ -27,6 +27,22 @@ class UserFavViewset(mixins.CreateModelMixin,mixins.DestroyModelMixin,mixins.Lis
     authentication_classes = (JSONWebTokenAuthentication,SessionAuthentication)
     lookup_field = "goods_id"  #用户进入页面 按照商品编号查找收藏记录
 
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        goods = instance.goods
+        goods.fav_num += 1
+        goods.save()
+
+    def perform_destroy(self, instance):
+
+        goods = instance.goods
+        goods.fav_num -= 1
+        if goods.fav_num < 0:
+            goods.fav_num = 0
+        goods.save()
+
+        instance.delete()
+
     def get_queryset(self): #只能查看自己的收藏
         return UserFav.objects.filter(user=self.request.user)
     def get_serializer_class(self):
