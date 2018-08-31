@@ -15,6 +15,7 @@ from .filters import GoodsFilter
 from rest_framework.filters import SearchFilter
 from rest_framework.filters import OrderingFilter
 from rest_framework.authentication import TokenAuthentication
+from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
 
 class DefaultResultsSetPagination(PageNumberPagination):
@@ -24,7 +25,7 @@ class DefaultResultsSetPagination(PageNumberPagination):
     max_page_size = 100     #通过url修改参数  最大单页面100个
 
 
-class GoodsListViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,GenericViewSet):
+class GoodsListViewSet(CacheResponseMixin,mixins.ListModelMixin,mixins.RetrieveModelMixin,GenericViewSet):
     """
     商品列表 分页 过滤 搜索 排序
     """
