@@ -72,10 +72,10 @@ urlpatterns = [
     url(r'docs/',include_docs_urls(title='api文档在线')),
 
     #REST framework JWT Auth
-    url(r'^login/', obtain_jwt_token),
+    url(r'^login/$', obtain_jwt_token),
 
     url('^alipay/return/',AlipayView.as_view(),name="alipay"),
 
 
-
+    url('', include('social_django.urls', namespace='social')),
 ]
