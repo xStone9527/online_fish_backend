@@ -14,13 +14,14 @@ class GoodsFilter(filters.FilterSet):
     商品的过滤类
     """
     pricemin = filters.NumberFilter(name="shop_price", lookup_expr='gte',help_text ="最小价格")
-    pricemax = filters.NumberFilter(name="shop_price", lookup_expr='lte')
+    pricemax = filters.NumberFilter(name="shop_price", lookup_expr='lte',help_text ='最大价格')
     name = filters.CharFilter(name ="name",lookup_expr='contains')
     top_category = filters.NumberFilter(method='top_category_filter')
     def top_category_filter(self,queryset,name,value):
          return queryset.filter(Q(category_id =value)\
                                 |Q(category__parent_category =value)\
                                 |Q( category__parent_category__parent_category = value))
+
 
 
     class Meta:
