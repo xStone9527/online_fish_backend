@@ -3,9 +3,9 @@ from django.shortcuts import render
 # Create your views here.
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import GoodsSerializer,GoodsCategorySerializer,BannerSerializer,IndexGoodsSerializer
+from .serializers import GoodsSerializer,GoodsCategorySerializer,BannerSerializer,IndexGoodsSerializer,HotWordsSerializer
 from rest_framework import status
-from .models import Goods,GoodsCategory,Banner
+from .models import Goods,GoodsCategory,Banner,HotSearchWords
 from rest_framework import mixins
 from rest_framework import generics
 from  rest_framework.pagination import PageNumberPagination
@@ -82,4 +82,9 @@ class IndexCategoryViewSet(mixins.ListModelMixin,GenericViewSet):
     queryset = GoodsCategory.objects.filter(is_tab=True,name__in=["生鲜食品","酒水饮料"])
     serializer_class = IndexGoodsSerializer
 
-
+class HotSearchsViewset(mixins.ListModelMixin, GenericViewSet):
+    """
+    获取热搜词列表
+    """
+    queryset = HotSearchWords.objects.all().order_by("-index")
+    serializer_class = HotWordsSerializer

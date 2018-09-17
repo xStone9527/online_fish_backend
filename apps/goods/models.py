@@ -50,7 +50,7 @@ class GoodsCategoryBrand(models.Model):
 class Goods(models.Model):
     category = models.ForeignKey(GoodsCategory,null=True,blank=True,verbose_name="商品类型",help_text="商品类型")
     good_sn = models.CharField(max_length=30,default="",verbose_name="商品编号",help_text="商品编号")
-    name = models.CharField(max_length=300,verbose_name="商品名称")
+    name = models.CharField(max_length=300,verbose_name="商品名称",help_text="商品名称")
     click_num = models.IntegerField(default=0,verbose_name="商品点击量")
     sold_num =  models.IntegerField(default=0,verbose_name="商品销售量",help_text="商品销售量")
     fav_num = models.IntegerField(default=0,verbose_name="商品收藏量")
@@ -113,3 +113,19 @@ class IndexAd(models.Model):
 
     def __str__(self):
         return self.goods.name
+
+
+class HotSearchWords(models.Model):
+    """
+    热搜词
+    """
+    keywords = models.CharField(default="", max_length=20, verbose_name="热搜词")
+    index = models.IntegerField(default=0, verbose_name="排序")
+    add_time = models.DateTimeField(auto_now_add=True, verbose_name="添加时间")
+
+    class Meta:
+        verbose_name = '热搜词'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.keywords

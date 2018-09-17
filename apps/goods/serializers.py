@@ -8,7 +8,7 @@ describe:
 from rest_framework import serializers
 from django.db.models import Q
 
-from .models import Goods,GoodsCategory,GoodsImage,Banner,GoodsCategoryBrand,IndexAd
+from .models import Goods,GoodsCategory,GoodsImage,Banner,GoodsCategoryBrand,IndexAd,HotSearchWords
 
 class GoodsCategorySerializer3(serializers.ModelSerializer):
     """
@@ -94,4 +94,8 @@ class IndexGoodsSerializer(serializers.ModelSerializer):
         model = GoodsCategory
         fields ="__all__"
 
+class HotWordsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HotSearchWords
+        fields = "__all__"
 
